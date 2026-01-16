@@ -62,8 +62,8 @@ export default function DashboardPage() {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right hidden sm:block">
-              <p className="text-sm font-medium">{user?.name || user?.email}</p>
-              <p className="text-xs text-muted-foreground">{user?.role}</p>
+              <p className="text-sm font-medium">{user?.email}</p>
+              {/* <p className="text-xs text-muted-foreground">{user?.role}</p> */}
             </div>
             <Button variant="outline" size="sm" onClick={handleLogout}>
               <LogOut className="h-4 w-4 mr-2" />
@@ -75,7 +75,7 @@ export default function DashboardPage() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold mb-2">ยินดีต้อนรับ, {user?.name || user?.email}!</h2>
+          <h2 className="text-3xl font-bold mb-2">ยินดีต้อนรับ, {user?.email}!</h2>
           <p className="text-muted-foreground">จัดการระบบสมาชิกของคุณได้ที่นี่</p>
         </div>
 
@@ -122,7 +122,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <p className="text-2xl font-bold text-purple-600 capitalize">
-                {user?.role || "User"}
+                {/* {user?.role || "User"} */}
               </p>
               <p className="text-sm text-muted-foreground mt-2">
                 สิทธิ์การเข้าถึงเต็มรูปแบบ
@@ -146,14 +146,14 @@ export default function DashboardPage() {
                 <span className="text-muted-foreground">อีเมล:</span>
                 <span className="font-medium">{user?.email}</span>
               </div>
-              <div className="flex justify-between py-3 border-b">
+              {/* <div className="flex justify-between py-3 border-b">
                 <span className="text-muted-foreground">ชื่อ:</span>
                 <span className="font-medium">{user?.name || "-"}</span>
               </div>
               <div className="flex justify-between py-3">
                 <span className="text-muted-foreground">บทบาท:</span>
                 <span className="font-medium capitalize">{user?.role}</span>
-              </div>
+              </div> */}
             </div>
           </CardContent>
         </Card>
