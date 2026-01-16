@@ -23,6 +23,8 @@ export default function MembersPage() {
   const [transactionAction, setTransactionAction] = useState<"EARN" | "REDEEM">("EARN")
   const [selectedMember, setSelectedMember] = useState<typeof members[0] | null>(null)
 
+  const safeMembers = members || []
+
   useEffect(() => {
     setIsClient(true)
     initAuth()
@@ -174,7 +176,7 @@ export default function MembersPage() {
               <p className="mt-4 text-muted-foreground">กำลังโหลด...</p>
             </div>
           </div>
-        ) : members.length === 0 ? (
+        ) : safeMembers.length === 0 ? (
           <div className="text-center py-20">
             <Users className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">ไม่พบข้อมูลลูกค้า</h3>
@@ -186,7 +188,7 @@ export default function MembersPage() {
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {members.map((member) => (
+            {safeMembers.map((member) => (
               <Card key={member.id} className="bg-white/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all">
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between mb-4">
@@ -273,7 +275,7 @@ export default function MembersPage() {
           </div>
         )}
 
-        {!isLoading && members.length > 0 && total > members.length && (
+        {!isLoading && safeMembers.length > 0 && total > safeMembers.length && (
           <div className="mt-8 flex justify-center gap-2">
             <Button
               variant="outline"

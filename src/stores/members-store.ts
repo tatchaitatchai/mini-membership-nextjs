@@ -57,15 +57,17 @@ export const useMembersStore = create<MembersState>((set, get) => ({
       const response = await apiClient.getMembers(currentSearch, currentPage, get().limit)
       
       set({
-        members: response.members,
-        total: response.total,
-        page: response.page,
-        limit: response.limit,
+        members: response.members || [],
+        total: response.total || 0,
+        page: response.page || 1,
+        limit: response.limit || 20,
         search: currentSearch,
         isLoading: false,
       })
     } catch (error) {
       set({
+        members: [],
+        total: 0,
         isLoading: false,
         error: error instanceof Error ? error.message : 'Failed to fetch members',
       })

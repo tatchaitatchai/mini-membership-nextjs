@@ -49,10 +49,12 @@ export default function TransactionsPage() {
     setIsLoading(true)
     try {
       const response = await apiClient.getBranchTransactions(page, 20)
-      setTransactions(response.transactions)
-      setTotal(response.total)
+      setTransactions(response.transactions || [])
+      setTotal(response.total || 0)
     } catch (error) {
       console.error('Failed to fetch transactions:', error)
+      setTransactions([])
+      setTotal(0)
     } finally {
       setIsLoading(false)
     }
@@ -72,6 +74,8 @@ export default function TransactionsPage() {
   const formatProductType = (type: string) => {
     return type === "1_0_LITER" ? "1.0 ลิตร" : "1.5 ลิตร"
   }
+
+  const safeTransactions = transactions || []
 
   if (!isClient || !isInitialized) {
     return null
@@ -124,7 +128,7 @@ export default function TransactionsPage() {
         ) : (
           <>
             <div className="space-y-3">
-              {transactions.map((transaction) => (
+              {safeTransactions.map((transaction) => (
                 <Card key={transaction.id} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">
@@ -186,7 +190,7 @@ export default function TransactionsPage() {
               ))}
             </div>
 
-            {transactions.length === 0 && !isLoading && (
+            {safeTransactions.length === 0 && !isLoading && (
               <div className="text-center py-12">
                 <Package className="w-16 h-16 mx-auto text-gray-400 mb-4" />
                 <h3 className="text-lg font-semibold mb-2">ยังไม่มีรายการ</h3>
@@ -194,7 +198,7 @@ export default function TransactionsPage() {
               </div>
             )}
 
-            {total > transactions.length && (
+            {total > safeTransactions.length && (
               <div className="mt-8 flex justify-center gap-2">
                 <Button
                   variant="outline"
