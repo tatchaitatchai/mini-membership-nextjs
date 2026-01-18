@@ -2,14 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const isLoginPage = request.nextUrl.pathname === '/login'
-  const isDashboard = request.nextUrl.pathname.startsWith('/dashboard')
-  const isPublicPath = request.nextUrl.pathname === '/'
-
-  if (isDashboard && isLoginPage) {
-    return NextResponse.next()
-  }
-
+  // Let client-side pages handle auth redirects
   return NextResponse.next()
 }
 

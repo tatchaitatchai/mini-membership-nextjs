@@ -24,6 +24,7 @@ export default function LoginPage() {
   const router = useRouter()
   const { login, isLoading, isAuthenticated, isInitialized, error, clearError, initAuth } = useAuthStore()
   const [isClient, setIsClient] = useState(false)
+  const [hasRedirected, setHasRedirected] = useState(false)
 
   const {
     register,
@@ -43,10 +44,11 @@ export default function LoginPage() {
   }, [initAuth])
 
   useEffect(() => {
-    if (isAuthenticated && isClient && isInitialized) {
+    if (isAuthenticated && isClient && isInitialized && !hasRedirected) {
+      setHasRedirected(true)
       router.replace("/members")
     }
-  }, [isAuthenticated, isClient, isInitialized, router])
+  }, [isAuthenticated, isClient, isInitialized, router, hasRedirected])
 
   useEffect(() => {
     if (error) {
