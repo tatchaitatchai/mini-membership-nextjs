@@ -37,6 +37,28 @@ export const useAuthStore = create<AuthState>()(
         if (typeof window === 'undefined') return
         if (get().isInitialized) return
         
+        const state = get()
+        
+        // Validate token consistency between localStorage and cookies
+        if (state.isAuthenticated && state.token) {
+          const isValid = apiClient.validateToken()
+          
+          if (!isValid) {
+            // Cookies are missing but localStorage says authenticated
+            // This means session expired - clear everything
+            console.warn('Token mismatch detected - clearing stale auth data')
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('auth_user')
+            set({
+              user: null,
+              token: null,
+              isAuthenticated: false,
+              isInitialized: true,
+            })
+            return
+          }
+        }
+        
         set({ isInitialized: true })
       },
 

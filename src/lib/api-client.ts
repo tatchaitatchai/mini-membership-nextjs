@@ -38,14 +38,45 @@ class ApiClient {
     })
   }
 
+  private getCookie(name: string): string | null {
+    if (typeof window === 'undefined') return null
+    const value = `; ${document.cookie}`
+    const parts = value.split(`; ${name}=`)
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || null
+    return null
+  }
+
+  private setCookie(name: string, value: string, days: number = 7): void {
+    if (typeof window === 'undefined') return
+    const expires = new Date()
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000)
+    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`
+  }
+
+  private deleteCookie(name: string): void {
+    if (typeof window === 'undefined') return
+    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;SameSite=Lax`
+  }
+
   private getToken(): string | null {
     if (typeof window === 'undefined') return null
-    return localStorage.getItem('auth_token')
+    // Try localStorage first, then cookie
+    const localToken = localStorage.getItem('auth_token')
+    const cookieToken = this.getCookie('auth_token')
+    
+    // If both exist but differ, use cookie (more recent)
+    if (cookieToken && cookieToken !== localToken) {
+      localStorage.setItem('auth_token', cookieToken)
+      return cookieToken
+    }
+    
+    return localToken || cookieToken
   }
 
   private setToken(token: string): void {
     if (typeof window !== 'undefined') {
       localStorage.setItem('auth_token', token)
+      this.setCookie('auth_token', token, 30) // 30 days
     }
   }
 
@@ -53,7 +84,17 @@ class ApiClient {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('auth_token')
       localStorage.removeItem('auth_user')
+      this.deleteCookie('auth_token')
+      this.deleteCookie('auth_user')
     }
+  }
+  
+  public validateToken(): boolean {
+    if (typeof window === 'undefined') return false
+    const localToken = localStorage.getItem('auth_token')
+    const cookieToken = this.getCookie('auth_token')
+    // Token is valid only if both exist
+    return !!(localToken && cookieToken)
   }
 
   async login(email: string, password: string) {
@@ -73,7 +114,9 @@ class ApiClient {
 
       this.setToken(response.token)
       if (typeof window !== 'undefined') {
-        localStorage.setItem('auth_user', JSON.stringify(response.staff_user))
+        const userJson = JSON.stringify(response.staff_user)
+        localStorage.setItem('auth_user', userJson)
+        this.setCookie('auth_user', userJson, 30) // 30 days
       }
 
       return {
