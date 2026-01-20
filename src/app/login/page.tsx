@@ -39,6 +39,26 @@ export default function LoginPage() {
   })
 
   useEffect(() => {
+    // Force check and clear stale localStorage on mount
+    if (typeof window !== 'undefined') {
+      const localToken = localStorage.getItem('auth_token')
+      const getCookie = (name: string) => {
+        const value = `; ${document.cookie}`
+        const parts = value.split(`; ${name}=`)
+        if (parts.length === 2) return parts.pop()?.split(';').shift() || null
+        return null
+      }
+      const cookieToken = getCookie('auth_token')
+      
+      // If localStorage has token but cookie doesn't, clear everything
+      if (localToken && !cookieToken) {
+        console.warn('Detected stale localStorage on login page - clearing')
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('auth_user')
+        localStorage.removeItem('auth-storage')
+      }
+    }
+    
     setIsClient(true)
     initAuth()
   }, [initAuth])

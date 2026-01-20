@@ -9,7 +9,30 @@ export default function Home() {
   const { isAuthenticated, isInitialized, initAuth } = useAuthStore()
   const [hasRedirected, setHasRedirected] = useState(false)
 
+  // Force check and clear stale localStorage on mount
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const localToken = localStorage.getItem('auth_token')
+      const getCookie = (name: string) => {
+        const value = `; ${document.cookie}`
+        const parts = value.split(`; ${name}=`)
+        if (parts.length === 2) return parts.pop()?.split(';').shift() || null
+        return null
+      }
+      const cookieToken = getCookie('auth_token')
+      
+      // If localStorage has token but cookie doesn't, clear everything
+      if (localToken && !cookieToken) {
+        console.warn('Detected stale localStorage - clearing immediately')
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('auth_user')
+        localStorage.removeItem('auth-storage')
+        // Force reload to clear Zustand state
+        window.location.reload()
+        return
+      }
+    }
+    
     initAuth()
   }, [initAuth])
 

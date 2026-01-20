@@ -26,9 +26,31 @@ export default function MembersPage() {
   const safeMembers = members || []
 
   useEffect(() => {
+    // Force check and clear stale localStorage on mount
+    if (typeof window !== 'undefined') {
+      const localToken = localStorage.getItem('auth_token')
+      const getCookie = (name: string) => {
+        const value = `; ${document.cookie}`
+        const parts = value.split(`; ${name}=`)
+        if (parts.length === 2) return parts.pop()?.split(';').shift() || null
+        return null
+      }
+      const cookieToken = getCookie('auth_token')
+      
+      // If localStorage has token but cookie doesn't, clear everything
+      if (localToken && !cookieToken) {
+        console.warn('Detected stale localStorage - clearing and redirecting to login')
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('auth_user')
+        localStorage.removeItem('auth-storage')
+        router.replace('/login')
+        return
+      }
+    }
+    
     setIsClient(true)
     initAuth()
-  }, [initAuth])
+  }, [initAuth, router])
 
   useEffect(() => {
     if (!isAuthenticated && isClient && isInitialized) {
