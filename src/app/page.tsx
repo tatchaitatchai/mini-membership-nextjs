@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -19,6 +20,124 @@ import {
   GitBranch,
 } from "lucide-react"
 
+export const metadata: Metadata = {
+  title: {
+    absolute: "POS ME - ระบบจัดการร้านค้าครบวงจร | ระบบ POS สมาชิก หลังบ้าน ครบจบในที่เดียว",
+  },
+  description:
+    "POS ME ระบบจัดการร้านค้าครบวงจร แอปสมาชิกสะสมแต้ม Points ME ระบบขายหน้าร้าน POS จัดการ Stock หลายสาขา Backoffice Dashboard ใช้งานง่าย เหมาะกับธุรกิจค้าปลีกทุกขนาด ดาวน์โหลดฟรี App Store Play Store",
+  alternates: {
+    canonical: "/",
+  },
+}
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://posme.app"
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "POS ME",
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/logo.png`,
+        width: 1024,
+        height: 1024,
+      },
+      email: "posme.membership@gmail.com",
+      telephone: "+66969593087",
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: "+66969593087",
+        email: "posme.membership@gmail.com",
+        contactType: "customer service",
+        availableLanguage: ["Thai", "English"],
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "POS ME",
+      description:
+        "ระบบจัดการร้านค้าครบวงจร แอปสมาชิก POS และ Backoffice",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      inLanguage: "th-TH",
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/#webpage`,
+      url: SITE_URL,
+      name: "POS ME - ระบบจัดการร้านค้าครบวงจร",
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      about: { "@id": `${SITE_URL}/#organization` },
+      description:
+        "POS ME ระบบจัดการร้านค้าครบวงจร แอปสมาชิกสะสมแต้ม ระบบขายหน้าร้าน POS จัดการ Stock หลายสาขา และ Backoffice Dashboard ในแพลตฟอร์มเดียว",
+      inLanguage: "th-TH",
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "Points ME",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "iOS, Android",
+      description:
+        "แอปพลิเคชันสมาชิกสะสมแต้ม ดูคะแนน แรงค์ ประวัติการซื้อ สิทธิพิเศษ ดาวน์โหลดฟรี",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "THB",
+      },
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "POS ME",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "iOS, Android",
+      description:
+        "แอปพลิเคชันขายสินค้าหน้าร้าน จัดการกะ ออเดอร์ Stock เบิกของ รับของ หลายสาขา",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "THB",
+      },
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "POS ME คืออะไร?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "POS ME คือระบบจัดการร้านค้าครบวงจร ประกอบด้วย 3 ผลิตภัณฑ์: แอปสมาชิก Points ME สำหรับลูกค้าสะสมแต้ม, แอป POS ME สำหรับขายหน้าร้าน จัดการกะ ออเดอร์ Stock, และ Web Backoffice สำหรับจัดการหลังบ้าน Dashboard สาขา สมาชิก สินค้า",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "POS ME รองรับหลายสาขาหรือไม่?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "รองรับ POS ME ออกแบบมาเพื่อรองรับหลายสาขา สามารถจัดการ Stock เบิกของ รับของ ระหว่างสาขา ดู Dashboard ยอดขายแยกสาขาหรือรวมทุกสาขาได้",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "ลูกค้าสมัครสมาชิก Points ME ได้อย่างไร?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "ลูกค้าสามารถดาวน์โหลดแอป Points ME ผ่าน App Store หรือ Play Store หรือสแกน QR Code จากหน้าร้าน จากนั้นสมัครสมาชิกด้วยเบอร์โทร รับ OTP ตั้งชื่อ และรับแรงค์เริ่มต้นทันที",
+          },
+        },
+      ],
+    },
+  ],
+}
+
 function Bullet({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex items-start gap-2">
@@ -31,6 +150,10 @@ function Bullet({ children }: { children: React.ReactNode }) {
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white antialiased">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-gray-200/50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
