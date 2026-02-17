@@ -20,7 +20,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!isAuthenticated && isClient) {
-      router.push("/login")
+      router.push("/backoffice/login")
     } else if (isAuthenticated && isClient) {
       router.push("/members")
     }
@@ -30,7 +30,7 @@ export default function DashboardPage() {
     try {
       await logout()
       toast.success("ออกจากระบบสำเร็จ")
-      router.push("/login")
+      router.push("/backoffice/login")
     } catch (error) {
       console.error("Logout error:", error)
     }

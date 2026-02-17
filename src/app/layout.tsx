@@ -6,8 +6,8 @@ import { Toaster } from "sonner"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Membership Backoffice",
-  description: "Modern membership management system",
+  title: "POS ME - ระบบจัดการร้านค้าครบวงจร",
+  description: "ระบบสมาชิก จัดการหน้าร้าน POS และหลังบ้าน ในแพลตฟอร์มเดียว",
 }
 
 export default function RootLayout({

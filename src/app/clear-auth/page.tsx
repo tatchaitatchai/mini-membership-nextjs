@@ -28,7 +28,7 @@ export default function ClearAuthPage() {
       
       // Redirect to login after 1 second
       setTimeout(() => {
-        router.replace('/login')
+        router.replace('/backoffice/login')
       }, 1000)
     }
   }, [router])

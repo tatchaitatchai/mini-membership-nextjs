@@ -43,7 +43,7 @@ export default function MembersPage() {
         localStorage.removeItem('auth_token')
         localStorage.removeItem('auth_user')
         localStorage.removeItem('auth-storage')
-        router.replace('/login')
+        router.replace('/backoffice/login')
         return
       }
     }
@@ -54,7 +54,7 @@ export default function MembersPage() {
 
   useEffect(() => {
     if (!isAuthenticated && isClient && isInitialized) {
-      router.replace("/login")
+      router.replace("/backoffice/login")
     }
   }, [isAuthenticated, isClient, isInitialized, router])
 
@@ -68,7 +68,7 @@ export default function MembersPage() {
     try {
       await logout()
       toast.success("ออกจากระบบสำเร็จ")
-      router.push("/login")
+      router.push("/backoffice/login")
     } catch (error) {
       console.error("Logout error:", error)
     }

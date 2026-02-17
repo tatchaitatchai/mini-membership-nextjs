@@ -35,7 +35,7 @@ export default function TransactionsPage() {
 
   useEffect(() => {
     if (!isAuthenticated && isClient && isInitialized) {
-      router.replace("/login")
+      router.replace("/backoffice/login")
     }
   }, [isAuthenticated, isClient, isInitialized, router])
 

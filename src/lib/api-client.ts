@@ -28,7 +28,7 @@ class ApiClient {
             if (response.status === 401) {
               this.clearToken()
               if (typeof window !== 'undefined') {
-                window.location.href = '/login'
+                window.location.href = '/backoffice/login'
               }
             }
             return response
